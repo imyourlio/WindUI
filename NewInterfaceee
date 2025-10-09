@@ -3937,7 +3937,8 @@ do
                         c("UICorner", {CornerRadius = UDim.new(0, g.UICorner)})
                     }),
                 (c("ImageLabel",{
-                        Image = "rbxassetid://8992230677",ImageColor3 = Color3.new(0, 0, 0),
+                        Image = "rbxassetid://8992230677",
+                        ImageColor3 = Color3.new(0, 0, 0),
                         ImageTransparency = 1,
                         Size = UDim2.new(1, 120, 1, 116),
                         Position = UDim2.new(0, -60, 0, -58),
@@ -3955,7 +3956,8 @@ do
             if not v then
                 y =
                     c("ImageLabel",{
-                        Image = "",Size = UDim2.new(0, 22, 0, 22),
+                        Image = "",
+                        Size = UDim2.new(0, 22, 0, 22),
                         Position = UDim2.new(0.5, 0, 0.5, 0),
                         LayoutOrder = -1,
                         AnchorPoint = Vector2.new(0.5, 0.5),
@@ -4286,9 +4288,11 @@ do
                             F.Image = b.Icon(g.Icon)[1]
                             F.ImageRectOffset = b.Icon(g.Icon)[2].ImageRectPosition
                             F.ImageRectSize = b.Icon(g.Icon)[2].ImageRectSize
-                            y.Image = b.Icon(g.Icon)[1]
-                            y.ImageRectOffset = b.Icon(g.Icon)[2].ImageRectPosition
-                            y.ImageRectSize = b.Icon(g.Icon)[2].ImageRectSize
+                            if y then
+                                y.Image = b.Icon(g.Icon)[1]
+                                y.ImageRectOffset = b.Icon(g.Icon)[2].ImageRectPosition
+                                y.ImageRectSize = b.Icon(g.Icon)[2].ImageRectSize
+                            end
                         end
                     end
                 else
