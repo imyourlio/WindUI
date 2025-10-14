@@ -1,3 +1,4 @@
+-- Edited
 local RunService = game:GetService"RunService"
 local UserInputService = game:GetService"UserInputService"
 local TouchInputService = game:GetService"TouchInputService"
@@ -1863,7 +1864,7 @@ do
                     TextXAlignment = "Left",Parent = k.DropdownFrame.UIElements.Main,
                     Size = UDim2.new(0, 150, 0, 30),
                     AnchorPoint = Vector2.new(1, 0.5),
-                    TextTruncate = "AtEnd",Position = UDim2.new(1, 0, 0.5, 0),
+                    TextTruncate = "None",Position = UDim2.new(1, 0, 0.5, 0),
                     ThemeTag = {
                         BackgroundColor3 = "Text",TextColor3 = "Text"
                     },
@@ -2006,10 +2007,16 @@ do
                             s = s .. u .. ", "
                         end
                     end
+                    s = s:sub(1, #s - 2)
                 else
                     s = k.Value or ""
                 end
                 k.UIElements.Dropdown.Text = (s == "" and "--" or s)
+                
+                -- Auto-adjust width based on text length
+                local textWidth = string.len(k.UIElements.Dropdown.Text) * 7 -- Approximate width calculation
+                local newWidth = math.clamp(textWidth + 40, 150, 300) -- Min 150, Max 300
+                k.UIElements.Dropdown.Size = UDim2.new(0, newWidth, 0, 30)
             end
             function k.Refresh(q, r)
                 for s, t in next, k.UIElements.Menu.CanvasGroup.ScrollingFrame:GetChildren() do
@@ -3307,20 +3314,6 @@ do
                             Title = g.Desc,
                             Parent = e.ToolTipParent
                         }
-                        local n = function(t)
-                            if not t or not t.Container then RenderStepped:Wait() return end
-                            ap = t.Container.AbsolutePosition
-                            as = t.Container.AbsoluteSize
-                            p = Vector2.new(Mouse.X, Mouse.Y)
-                            return (p.X >= ap.X and p.X <= ap.X + as.X and p.Y >= ap.Y and p.Y <= ap.Y + as.Y)
-                        end
-                        local x = function()
-                            if t and n(t) then
-                                t.Container.Position = UDim2.new(0, LocalPlayer:GetMouse().X, 0, LocalPlayer:GetMouse().Y - 20)
-                            end
-                        end
-                        x()
-                        v = LocalPlayer:GetMouse().Move:Connect(x)
                         t:Open()
                     end
                  end)
