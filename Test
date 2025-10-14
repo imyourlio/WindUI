@@ -1,3 +1,4 @@
+-- Edited
 local RunService = game:GetService"RunService"
 local UserInputService = game:GetService"UserInputService"
 local TouchInputService = game:GetService"TouchInputService"
@@ -2059,10 +2060,10 @@ do
                                     ThemeTag = {
                                         TextColor3 = "Text",BackgroundColor3 = "Text"
                                     },
-                                    TextSize = 30,
+                                    TextSize = 15,
                                     BackgroundTransparency = 1,
                                     TextTransparency = 0.4,
-                                    AutomaticSize = "Y",TextTruncate = "AtEnd",Size = UDim2.new(1, -18 - h.TabPadding * 3, 0, 0),
+                                    AutomaticSize = "Y",TextTruncate = "None",Size = UDim2.new(1, -18 - h.TabPadding * 3, 0, 0),
                                     AnchorPoint = Vector2.new(0, 0.5),
                                     Position = UDim2.new(0, 0, 0.5, 0)
                                 }
