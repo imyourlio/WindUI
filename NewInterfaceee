@@ -1,4 +1,3 @@
--- Edited2
 local RunService = game:GetService"RunService"
 local UserInputService = game:GetService"UserInputService"
 local TouchInputService = game:GetService"TouchInputService"
@@ -1864,7 +1863,7 @@ do
                     TextXAlignment = "Left",Parent = k.DropdownFrame.UIElements.Main,
                     Size = UDim2.new(0, 150, 0, 30),
                     AnchorPoint = Vector2.new(1, 0.5),
-                    TextTruncate = "None",Position = UDim2.new(1, 0, 0.5, 0),
+                    TextTruncate = "AtEnd",Position = UDim2.new(1, 0, 0.5, 0),
                     ThemeTag = {
                         BackgroundColor3 = "Text",TextColor3 = "Text"
                     },
@@ -2063,7 +2062,7 @@ do
                                     TextSize = 15,
                                     BackgroundTransparency = 1,
                                     TextTransparency = 0.4,
-                                    AutomaticSize = "Y",TextTruncate = "None",Size = UDim2.new(1, -18 - h.TabPadding * 3, 0, 0),
+                                    AutomaticSize = "Y",TextTruncate = "AtEnd",Size = UDim2.new(1, -18 - h.TabPadding * 3, 0, 0),
                                     AnchorPoint = Vector2.new(0, 0.5),
                                     Position = UDim2.new(0, 0, 0.5, 0)
                                 }
