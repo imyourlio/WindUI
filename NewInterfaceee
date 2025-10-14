@@ -2006,7 +2006,6 @@ do
                             s = s .. u .. ", "
                         end
                     end
-                    s = s:sub(1, #s - 2)
                 else
                     s = k.Value or ""
                 end
@@ -3308,8 +3307,15 @@ do
                             Title = g.Desc,
                             Parent = e.ToolTipParent
                         }
+                        local n = function(t)
+                            if not t or not t.Container then RenderStepped:Wait() return end
+                            ap = t.Container.AbsolutePosition
+                            as = t.Container.AbsoluteSize
+                            p = Vector2.new(Mouse.X, Mouse.Y)
+                            return (p.X >= ap.X and p.X <= ap.X + as.X and p.Y >= ap.Y and p.Y <= ap.Y + as.Y)
+                        end
                         local x = function()
-                            if t then
+                            if t and n(t) then
                                 t.Container.Position = UDim2.new(0, LocalPlayer:GetMouse().X, 0, LocalPlayer:GetMouse().Y - 20)
                             end
                         end
