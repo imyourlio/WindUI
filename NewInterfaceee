@@ -1,4 +1,4 @@
--- Edited
+-- Edited2
 local RunService = game:GetService"RunService"
 local UserInputService = game:GetService"UserInputService"
 local TouchInputService = game:GetService"TouchInputService"
@@ -2012,11 +2012,6 @@ do
                     s = k.Value or ""
                 end
                 k.UIElements.Dropdown.Text = (s == "" and "--" or s)
-                
-                -- Auto-adjust width based on text length
-                local textWidth = string.len(k.UIElements.Dropdown.Text) * 7 -- Approximate width calculation
-                local newWidth = math.clamp(textWidth + 40, 150, 300) -- Min 150, Max 300
-                k.UIElements.Dropdown.Size = UDim2.new(0, newWidth, 0, 30)
             end
             function k.Refresh(q, r)
                 for s, t in next, k.UIElements.Menu.CanvasGroup.ScrollingFrame:GetChildren() do
@@ -2068,7 +2063,7 @@ do
                                     TextSize = 15,
                                     BackgroundTransparency = 1,
                                     TextTransparency = 0.4,
-                                    AutomaticSize = "Y",TextTruncate = "AtEnd",Size = UDim2.new(1, -18 - h.TabPadding * 3, 0, 0),
+                                    AutomaticSize = "Y",TextTruncate = "None",Size = UDim2.new(1, -18 - h.TabPadding * 3, 0, 0),
                                     AnchorPoint = Vector2.new(0, 0.5),
                                     Position = UDim2.new(0, 0, 0.5, 0)
                                 }
