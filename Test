@@ -1,4 +1,4 @@
--- Edi2
+-- Edited3
 local RunService = game:GetService"RunService"
 local UserInputService = game:GetService"UserInputService"
 local TouchInputService = game:GetService"TouchInputService"
@@ -2167,8 +2167,16 @@ do
             p()
             function k.Open(q)
                 k.Opened = true
+                
+                game:GetService("RunService").RenderStepped:Wait()
+                
                 k.UIElements.MenuCanvas.Visible = true
                 k.UIElements.MenuCanvas.Active = true
+                
+                o()
+                p()
+                UpdatePosition()
+                
                 k.UIElements.Menu.Size = UDim2.new(1, 0, 0, 0)
                 g(k.UIElements.Menu,
                     0.1,
@@ -2178,7 +2186,6 @@ do
                 ):Play()
                 g(k.UIElements.Dropdown.ImageLabel, 0.15, {Rotation = 180}):Play()
                 g(k.UIElements.MenuCanvas, 0.15, {GroupTransparency = 0}):Play()
-                UpdatePosition()
             end
             function k.Close(q)
                 k.Opened = false
@@ -2840,6 +2847,7 @@ do
                 return V:find "%." and tonumber(V:sub(1, V:find "%." + W)) or V
             end
             function r.Update(U, V, W)
+                RenderStepped:Wait()
                 if V then
                     u, v, w = Color3.toHSV(V)
                 else
@@ -2941,7 +2949,6 @@ do
                         r.Sat = (Z - X) / (Y - X)
                         r.Vib = 1 - ((ab - _) / (aa - _))
                         r:Update()
-                        RenderStepped:Wait()
                     end
                 end
             end)
@@ -2953,7 +2960,6 @@ do
                         local X = math.clamp(LocalPlayer:GetMouse().Y, ab, W)
                         r.Hue = ((X - ab) / (W - ab))
                         r:Update()
-                        RenderStepped:Wait()
                     end
                 end
             end)
@@ -2966,7 +2972,6 @@ do
                             local X = math.clamp(LocalPlayer:GetMouse().Y, ab, W)
                             r.Transparency = 1 - ((X - ab) / (W - ab))
                             r:Update()
-                            RenderStepped:Wait()
                         end
                     end
                 end)
