@@ -1,4 +1,4 @@
--- Edited3
+-- Edited21
 local RunService = game:GetService"RunService"
 local UserInputService = game:GetService"UserInputService"
 local TouchInputService = game:GetService"TouchInputService"
@@ -1989,17 +1989,28 @@ do
                             k.UIElements.UIListLayout.AbsoluteContentSize.Y + h.MenuPadding * 2 + 1)
                     end
                 end
+            local updateConnection
+
             function UpdatePosition()
-                RenderStepped:Wait()
-                local q = -35
-                if d.ViewportSize.Y - k.UIElements.Dropdown.AbsolutePosition.Y + q < k.UIElements.MenuCanvas.AbsoluteSize.Y + 10 then
-                    q = k.UIElements.MenuCanvas.AbsoluteSize.Y - (d.ViewportSize.Y - k.UIElements.Dropdown.AbsolutePosition.Y) + 10
-                end
-                k.UIElements.MenuCanvas.Position =
-                    UDim2.fromOffset(k.UIElements.Dropdown.AbsolutePosition.X - 1,
-                    k.UIElements.Dropdown.AbsolutePosition.Y - q
-                )
+                if updateConnection then return end -- do not create multiple connections
+
+                updateConnection = RunService.RenderStepped:Connect(function()
+                    if not k.Opened then
+                        updateConnection:Disconnect()
+                        updateConnection = nil
+                        return
+                    end
+
+                    local absPos = k.UIElements.Dropdown.AbsolutePosition
+                    local absSize = k.UIElements.Dropdown.AbsoluteSize
+
+                    local dropdownX = absPos.X - 1
+                    local dropdownY = absPos.Y + absSize.Y + 2
+
+                    k.UIElements.MenuCanvas.Position = UDim2.fromOffset(dropdownX, dropdownY)
+                end)
             end
+
             function k.Display(q)
                 local r, s = k.Values, ""
                 if k.Multi then
@@ -2165,23 +2176,43 @@ do
             end
             k:Display()
             p()
-            function k.Open(q)
+            function k.Open()
                 k.Opened = true
                 k.UIElements.MenuCanvas.Visible = true
                 k.UIElements.MenuCanvas.Active = true
-                k.UIElements.Menu.Size = UDim2.new(1, 0, 0, 0)
-                g(k.UIElements.Menu,
-                    0.1,
-                    {Size = UDim2.new(1, 0, 1, 0)},
-                    Enum.EasingStyle.Quart,
-                    Enum.EasingDirection.Out
-                ):Play()
+
+                local absPos = k.UIElements.Dropdown.AbsolutePosition
+                local absSize = k.UIElements.Dropdown.AbsoluteSize
+                k.UIElements.MenuCanvas.Position = UDim2.fromOffset(absPos.X - 1, absPos.Y + absSize.Y + 2)
+
+                UpdatePosition()
+
+                g(k.UIElements.Menu, 0.1, {Size = UDim2.new(1,0,1,0)}, Enum.EasingStyle.Quart, Enum.EasingDirection.Out):Play()
                 g(k.UIElements.Dropdown.ImageLabel, 0.15, {Rotation = 180}):Play()
                 g(k.UIElements.MenuCanvas, 0.15, {GroupTransparency = 0}):Play()
-                UpdatePosition()
+
+                task.defer(function()
+                    local clickConn
+                    clickConn = b.InputBegan:Connect(function(q)
+                        if q.UserInputType == Enum.UserInputType.MouseButton1 or q.UserInputType == Enum.UserInputType.Touch then
+                            local r, s = k.UIElements.MenuCanvas.AbsolutePosition, k.UIElements.MenuCanvas.AbsoluteSize
+                            if j.Window.CanDropdown and
+                                    (c.X < r.X or c.X > r.X + s.X or c.Y < r.Y or c.Y > r.Y + s.Y)
+                                then
+                                k:Close()
+                                clickConn:Disconnect()
+                            end
+                        end
+                    end)
+                end)
             end
+
             function k.Close(q)
                 k.Opened = false
+                if updateConnection then
+                    updateConnection:Disconnect()
+                    updateConnection = nil
+                end
                 g(k.UIElements.Menu,
                     0.1,
                     {
@@ -2201,17 +2232,6 @@ do
                     k:Open()
                 end
             end)
-            b.InputBegan:Connect(function(q)
-                if q.UserInputType == Enum.UserInputType.MouseButton1 or q.UserInputType == Enum.UserInputType.Touch then
-                    local r, s = k.UIElements.MenuCanvas.AbsolutePosition, k.UIElements.MenuCanvas.AbsoluteSize
-                    if j.Window.CanDropdown and
-                            (c.X < r.X or c.X > r.X + s.X or c.Y < (r.Y - 20 - 1) or c.Y > r.Y + s.Y)
-                        then
-                        k:Close()
-                    end
-                end
-            end)
-            k.UIElements.Dropdown:GetPropertyChangedSignal "AbsolutePosition":Connect(UpdatePosition)
             return k.__type, k
         end
         return h
@@ -2840,6 +2860,7 @@ do
                 return V:find "%." and tonumber(V:sub(1, V:find "%." + W)) or V
             end
             function r.Update(U, V, W)
+                RenderStepped:Wait()
                 if V then
                     u, v, w = Color3.toHSV(V)
                 else
@@ -2941,7 +2962,6 @@ do
                         r.Sat = (Z - X) / (Y - X)
                         r.Vib = 1 - ((ab - _) / (aa - _))
                         r:Update()
-                        RenderStepped:Wait()
                     end
                 end
             end)
@@ -2953,7 +2973,6 @@ do
                         local X = math.clamp(LocalPlayer:GetMouse().Y, ab, W)
                         r.Hue = ((X - ab) / (W - ab))
                         r:Update()
-                        RenderStepped:Wait()
                     end
                 end
             end)
@@ -2966,7 +2985,6 @@ do
                             local X = math.clamp(LocalPlayer:GetMouse().Y, ab, W)
                             r.Transparency = 1 - ((X - ab) / (W - ab))
                             r:Update()
-                            RenderStepped:Wait()
                         end
                     end
                 end)
@@ -4876,4 +4894,5 @@ function aa.CreateWindow(k, n)
     end
     return s
 end
+
 return aa
