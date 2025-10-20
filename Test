@@ -1,4 +1,4 @@
--- Edited3
+-- Edited3w
 local RunService = game:GetService"RunService"
 local UserInputService = game:GetService"UserInputService"
 local TouchInputService = game:GetService"TouchInputService"
@@ -2167,17 +2167,10 @@ do
             p()
             function k.Open(q)
                 k.Opened = true
-                
-                game:GetService("RunService").RenderStepped:Wait()
-                
                 k.UIElements.MenuCanvas.Visible = true
                 k.UIElements.MenuCanvas.Active = true
-                
-                o()
-                p()
-                UpdatePosition()
-                
                 k.UIElements.Menu.Size = UDim2.new(1, 0, 0, 0)
+                UpdatePosition()
                 g(k.UIElements.Menu,
                     0.1,
                     {Size = UDim2.new(1, 0, 1, 0)},
@@ -2218,7 +2211,11 @@ do
                     end
                 end
             end)
-           -- k.UIElements.Dropdown:GetPropertyChangedSignal "AbsolutePosition":Connect(UpdatePosition)
+            game:GetService("RunService").RenderStepped:Connect(function()
+                if k.Opened then
+                    UpdatePosition()
+                end
+            end)
             return k.__type, k
         end
         return h
