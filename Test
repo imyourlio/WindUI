@@ -1,4 +1,4 @@
--- ww
+-- kk
 -- Edited3
 local RunService = game:GetService"RunService"
 local UserInputService = game:GetService"UserInputService"
@@ -2218,7 +2218,7 @@ do
                 end
             end)
 
-            j.Window.SuperParent:GetPropertyChangedSignal("AbsolutePosition"):Connect(function()
+            k.UIElements.Dropdown:GetPropertyChangedSignal("AbsolutePosition"):Connect(function()
                 if k.Opened then
                     UpdatePosition()
                 end
