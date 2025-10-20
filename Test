@@ -1,4 +1,4 @@
--- kk
+-- MM
 -- Edited3
 local RunService = game:GetService"RunService"
 local UserInputService = game:GetService"UserInputService"
@@ -1990,16 +1990,37 @@ do
                             k.UIElements.UIListLayout.AbsoluteContentSize.Y + h.MenuPadding * 2 + 1)
                     end
                 end
+
+            local Camera = workspace.CurrentCamera
+            local updateConnection
+
             function UpdatePosition()
-                local q = -35
-                if d.ViewportSize.Y - k.UIElements.Dropdown.AbsolutePosition.Y + q < k.UIElements.MenuCanvas.AbsoluteSize.Y + 10 then
-                    q = k.UIElements.MenuCanvas.AbsoluteSize.Y - (d.ViewportSize.Y - k.UIElements.Dropdown.AbsolutePosition.Y) + 10
-                end
-                k.UIElements.MenuCanvas.Position =
-                    UDim2.fromOffset(k.UIElements.Dropdown.AbsolutePosition.X - 1,
-                    k.UIElements.Dropdown.AbsolutePosition.Y - q
-                )
+                if updateConnection then updateConnection:Disconnect() end
+
+                updateConnection = RunService.RenderStepped:Connect(function()
+                    if not k.Opened or not k.UIElements.Dropdown or not k.UIElements.MenuCanvas then
+                        if updateConnection then
+                            updateConnection:Disconnect()
+                            updateConnection = nil
+                        end
+                        return
+                    end
+
+                    local absPos = k.UIElements.Dropdown.AbsolutePosition
+                    local absSize = k.UIElements.Dropdown.AbsoluteSize
+
+                    local dropdownY = absPos.Y + absSize.Y + 2
+
+                    local viewportY = workspace.CurrentCamera.ViewportSize.Y
+                    if dropdownY + k.UIElements.MenuCanvas.AbsoluteSize.Y > viewportY then
+                        dropdownY = absPos.Y - k.UIElements.MenuCanvas.AbsoluteSize.Y - 2
+                    end
+
+                    k.UIElements.MenuCanvas.Position = UDim2.fromOffset(absPos.X - 1, dropdownY)
+                end)
             end
+
+
             function k.Display(q)
                 local r, s = k.Values, ""
                 if k.Multi then
@@ -2170,13 +2191,6 @@ do
                 k.UIElements.MenuCanvas.Visible = true
                 k.UIElements.MenuCanvas.Active = true
                 k.UIElements.Menu.Size = UDim2.new(1, 0, 0, 0)
-                
-                game:GetService("RunService").Heartbeat:Wait()
-                o()
-                p()
-                
-                UpdatePosition()
-                
                 g(k.UIElements.Menu,
                     0.1,
                     {Size = UDim2.new(1, 0, 1, 0)},
@@ -2185,6 +2199,7 @@ do
                 ):Play()
                 g(k.UIElements.Dropdown.ImageLabel, 0.15, {Rotation = 180}):Play()
                 g(k.UIElements.MenuCanvas, 0.15, {GroupTransparency = 0}):Play()
+                UpdatePosition()
             end
             function k.Close(q)
                 k.Opened = false
@@ -2217,18 +2232,7 @@ do
                     end
                 end
             end)
-
-            k.UIElements.Dropdown:GetPropertyChangedSignal("AbsolutePosition"):Connect(function()
-                if k.Opened then
-                    UpdatePosition()
-                end
-            end)
-
-            workspace.CurrentCamera:GetPropertyChangedSignal("ViewportSize"):Connect(function()
-                if k.Opened then
-                    UpdatePosition()
-                end
-            end)
+            k.UIElements.Dropdown:GetPropertyChangedSignal "AbsolutePosition":Connect(UpdatePosition)
             return k.__type, k
         end
         return h
