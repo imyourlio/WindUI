@@ -1,4 +1,4 @@
--- Edited3
+-- Edi2
 local RunService = game:GetService"RunService"
 local UserInputService = game:GetService"UserInputService"
 local TouchInputService = game:GetService"TouchInputService"
@@ -1831,7 +1831,7 @@ do
             a.load "b"
         local f, g, h = e.New, e.Tween, {UICorner = 6, UIPadding = 8, MenuCorner = 14, MenuPadding = 7, TabPadding = 10}
         function h.New(i, j)
-            task.wait(0.05)
+            task.wait()
             local k, n =
                 {
                     __type = "Dropdown",Title = j.Title or "Dropdown",Desc = j.Desc or nil,
@@ -2211,7 +2211,7 @@ do
                     end
                 end
             end)
-            k.UIElements.Dropdown:GetPropertyChangedSignal "AbsolutePosition":Connect(UpdatePosition)
+           -- k.UIElements.Dropdown:GetPropertyChangedSignal "AbsolutePosition":Connect(UpdatePosition)
             return k.__type, k
         end
         return h
